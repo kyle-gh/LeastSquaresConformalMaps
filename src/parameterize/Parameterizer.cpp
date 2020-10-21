@@ -93,7 +93,7 @@ void Parameterizer::setAnchors(const Chart& chart)
     auto maxV = Mesh::VertexHandle();
     auto maxU = MAX_DEFAULT;
     auto maxUV = Mesh::Point();
-    
+
     for (const auto& vertex : chart.vertices())
     {
         const auto& p = _mesh->point(vertex);
@@ -280,11 +280,21 @@ void Parameterizer::buildMaps(const Chart& chart)
 
     for (const auto& face : chart.faces())
     {
+        if (_fmap.count(face) > 0)
+        {
+            continue;
+        }
+
         _fmap[face] = _fmap.size() * 2;
     }
 
     for (const auto& anchor : _anchors)
     {
+        if (_amap.count(anchor.h) > 0)
+        {
+            continue;
+        }
+
         _amap[anchor.h] = _amap.size() * 2;
     }
 
@@ -319,7 +329,6 @@ Parameterizer::VertexId Parameterizer::id(const Mesh::VertexHandle& vertex)
     
     return id;
 }
-
 
 bool Parameterizer::isAnchor(const Mesh::VertexHandle& h)
 {

@@ -285,7 +285,8 @@ void Parameterizer::buildMaps(const Chart& chart)
             continue;
         }
 
-        _fmap[face] = _fmap.size() * 2;
+        const auto id = _fmap.size() * 2;
+        _fmap[face] = id;
     }
 
     for (const auto& anchor : _anchors)
@@ -295,7 +296,8 @@ void Parameterizer::buildMaps(const Chart& chart)
             continue;
         }
 
-        _amap[anchor.h] = _amap.size() * 2;
+        const auto id = _amap.size() * 2;
+        _amap[anchor.h] = id;
     }
 
     for (const auto& face : chart.faces())
@@ -315,7 +317,8 @@ void Parameterizer::buildMaps(const Chart& chart)
                 continue;
             }
 
-            _vmap[vertex] = _vmap.size() * 2;
+            const auto id = _vmap.size() * 2;
+            _vmap[vertex] = id;
         }
     }
 }

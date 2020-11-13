@@ -179,10 +179,15 @@ void ChartBuilder::buildCharts()
         
         auto face = _mesh->face_handle(halfedge);
         auto faceOpp = (Mesh::FaceHandle)_mesh->opposite_face_handle(halfedge);
-        
+
+        if (!face.is_valid() || !faceOpp.is_valid())
+        {
+            continue;
+        }
+
         auto* state = &_faceStates[face];
         auto* stateOpp = &_faceStates[faceOpp];
-        
+
         if (!state->hasChart())
         {
             std::swap(face, faceOpp);

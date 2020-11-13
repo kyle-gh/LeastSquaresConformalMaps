@@ -29,6 +29,7 @@ int main(int argc, char * argv[])
             ("v,viz", "Path to save visualizations", cxxopts::value<std::string>())
             ("r,resolution", "Resolution of packing texture", cxxopts::value<size_t>())
             ("p,padding", "Padding between charts", cxxopts::value<size_t>())
+            ("val", "Validate output", cxxopts::value<bool>())
             ;
 
     std::string inputPath;
@@ -37,6 +38,7 @@ int main(int argc, char * argv[])
     size_t resolution = 2048;
     size_t padding = 4;
     std::stringstream path;
+    bool validate = false;
 
     try
     {
@@ -64,6 +66,11 @@ int main(int argc, char * argv[])
         if (result.count("p"))
         {
             padding = result["padding"].as<size_t>();
+        }
+
+        if (result.count("val"))
+        {
+            validate = result["val"].as<bool>();
         }
     }
     catch (const cxxopts::OptionException& e)
@@ -99,10 +106,13 @@ int main(int argc, char * argv[])
 
     TIMER_END(Charts);
 
-
-    if (!chartBuilder.validate())
+    if (validate)
     {
-        return 1;
+        if (!chartBuilder.validate())
+        {
+            std::cerr << "*Validation failed" << std::endl;
+            return 1;
+        }
     }
 
     if (!vizPath.empty())
